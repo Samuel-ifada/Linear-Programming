@@ -127,11 +127,8 @@
 
 
 \begin{abstract}
-
-
-
-\end{abstract}
 In alloy design, constraint-driven screening is traditionally performed using a generate-and-filter workflow in which every candidate composition on a discrete grid is generated, evaluated using a response model, and subsequently filtered against performance thresholds. This approach incurs a computational cost proportional to the full composition grid, even when only a small fraction of candidates satisfy the imposed constraints. Here, we present an alternative framework that reformulates the screening problem as a linear-programming (LP) feasibility problem whenever the response model is linear in alloy composition. Under this formulation, the set of compositions satisfying all screening criteria forms a convex polytope on the atomic-fraction simplex, enabling feasibility to be determined through a single polytope construction followed by lattice-point enumeration, rather than through explicit per-composition response evaluation. The LP formulation reproduces the exact survivor set while eliminating the conventional generate-and-filter evaluation step. We demonstrate the approach using FLARE, a linear-in-composition activation model, to screen low-activation refractory alloys for fusion structural applications. The LP-defined survivor set reproduces the conventional FLARE-then-filter workflow exactly, while replacing exhaustive per-composition response evaluation with analytical feasible-space construction. More broadly, the proposed constraint-first LP framework is applicable to any alloy-screening workflow governed by response models that are linear in composition.
+\end{abstract}
 \begin{keyword}
  linear programming, constraint satisfaction-based alloy design, constraint-first screening,
 linear-in-composition response models, FLARE, low-activation refractory alloys, fusion structural
