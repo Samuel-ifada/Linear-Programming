@@ -4,7 +4,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 # =========================
-# STYLE  (matches LP_FLARE_GRID.py)
+# STYLE  (matches generate_lp_grid.py)
 # =========================
 mpl.rcParams.update({
     "font.family": "serif",
