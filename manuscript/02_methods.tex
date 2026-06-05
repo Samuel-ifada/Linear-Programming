@@ -21,6 +21,41 @@ replaces conventional generate-and-filter screening with a constraint-first
 methodology that directly identifies compositions satisfying the prescribed
 activation requirements.
 \subsubsection{Alloy design domain and FLARE response model}
+The alloy design domain considered in this work consists of the eleven-element
+refractory system comprising Ti, V, Ta, Nb, Mo, Zr, Cr, Hf, Fe, Re, and W. An
+alloy is represented by its atomic-fraction vector
+\(x=(x_1,\ldots,x_N)\) with \(N=11\), where \(x_i\) is the atomic fraction of
+element \(i\). Physically admissible compositions lie on the standard
+\((N-1)\)-simplex,
+
+\[
+\Delta=\Big\{x\in\mathbb{R}^{N}:\sum_i x_i=1,\; x_i\ge0\Big\}, \tag{1}
+\]
+
+and the discrete design domain is the regular 5 at.% grid on \(\Delta\), i.e.,
+the set of compositions whose fractions are integer multiples of 0.05. On an
+eleven-element simplex, this grid contains approximately \(3\times10^7\)
+compositions, illustrating the computational burden associated with conventional
+generate-and-filter screening.
+
+Candidate alloys are screened on their neutron-activation response using the
+FLARE reduced-order model. FLARE computes each activation response of an alloy as
+a composition-weighted sum of pre-tabulated pure-element contributions, so that
+every response is linear in alloy composition. Responses are evaluated at a
+neutron flux of \(8.0\times10^{13}\), an irradiation time of 2 years, and the
+decay times associated with each screening criterion.
+
+Screening is performed using five activation responses: gas production
+\(M_{\mathrm{GAS}}\), total heat output \(HT_T\), and displacement damage
+\(DPA\) at a decay time of approximately 1 s, together with contact dose rate
+\(DOSE\) at decay times of 1 month and 100 years. Each response combines from its
+per-element contributions in the appropriate extensive basis -- by weight
+fraction for the mass-extensive responses (\(M_{\mathrm{GAS}}\), \(HT_T\), and
+\(DOSE\)) and by atomic fraction for the atom-extensive response (\(DPA\)). This
+distinction determines the exact form of the linear constraints constructed in
+Section 2.1.2. Activation thresholds are defined relative to pure W and EUROFER97
+reference response vectors, as described in the LP formulation of the following
+section.
 \subsubsection{LP constraint construction}
 \subsubsection{Feasible polytope and vertex enumeration}
 \subsubsection{LP-guided composition enumeration}
