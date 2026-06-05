@@ -57,6 +57,73 @@ Section 2.1.2. Activation thresholds are defined relative to pure W and EUROFER9
 reference response vectors, as described in the LP formulation of the following
 section.
 \subsubsection{LP constraint construction}
+The activation screening criteria are imposed directly on the FLARE response model
+and reformulated as linear inequalities in composition space. Because FLARE
+responses are linear in alloy composition, each screening criterion can be
+expressed as a constraint on the atomic-fraction vector \(x\). The linear response
+coefficients are collected in the response matrix
+
+\[
+A \in \mathbb{R}^{R\times N},\qquad A_{r,i}=f_r(e_i), \tag{2}
+\]
+
+where \(A_{r,i}\) denotes response \(r\) of pure element \(i\), with \(R=5\)
+screening responses and \(N=11\) elements. Each screening threshold is defined
+relative to a reference alloy,
+
+\[
+\tau_r=\phi\,b_r,\qquad \phi=10, \tag{3}
+\]
+
+where \(b=(b_1,\ldots,b_R)\) is the reference response vector, taken as either pure
+tungsten (\(b_W\)) or EUROFER97 (\(b_E\)), and \(\phi\) is the threshold
+multiplier.
+
+Each criterion is then expressed as a linear inequality in the atomic-fraction
+vector \(x\). The distinction in extensive basis introduced in Section 2.1.1
+determines its form. The atom-extensive response DPA combines directly by atomic
+fraction and is therefore already linear in \(x\),
+
+\[
+\sum_i x_i A_{r,i}\le \phi b_r. \tag{4}
+\]
+
+The mass-extensive responses (\(M_{\mathrm{GAS}}\), \(HT_T\), and \(DOSE\)) combine
+by weight fraction,
+
+\[
+w_i=\frac{x_i M_i}{\sum_j x_j M_j}, \tag{5}
+\]
+
+where \(M_i\) is the atomic mass of element \(i\). Substituting Eq. (5) into the
+natural constraint \(\sum_i w_i A_{r,i}\le \phi b_r\) introduces the
+composition-dependent denominator \(\sum_j x_j M_j\) and is therefore nonlinear in
+\(x\). Because this denominator is strictly positive on the simplex, multiplying
+through by it preserves the inequality while eliminating the nonlinearity, yielding
+the equivalent linear form
+
+\[
+\sum_i x_i M_i (A_{r,i}-\phi b_r)\le 0. \tag{6}
+\]
+
+Equations (4) and (6) are both linear in \(x\). Stacking all \(R\) screening
+criteria together with the box bounds \(0\le x_i\le1\) yields the linear inequality
+system
+
+\[
+G x\le h, \tag{7}
+\]
+
+in which the DPA row contributes the coefficients \(A_{r,i}\) with right-hand side
+\(\phi b_r\), while each mass-extensive response contributes the patched
+coefficients \(M_i(A_{r,i}-\phi b_r)\) with right-hand side zero. Together with the
+simplex equality constraint
+
+\[
+\sum_i x_i = 1, \tag{8}
+\]
+
+the resulting system defines the complete LP feasibility problem. The solution set
 \subsubsection{Feasible polytope and vertex enumeration}
 \subsubsection{LP-guided composition enumeration}
 
