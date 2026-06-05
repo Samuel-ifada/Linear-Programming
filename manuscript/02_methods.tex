@@ -20,7 +20,9 @@ obtained through LP-guided exploration of the polytope. The framework therefore
 replaces conventional generate-and-filter screening with a constraint-first
 methodology that directly identifies compositions satisfying the prescribed
 activation requirements.
+
 \subsubsection{Alloy design domain and FLARE response model}
+
 The alloy design domain considered in this work consists of the eleven-element
 refractory system comprising Ti, V, Ta, Nb, Mo, Zr, Cr, Hf, Fe, Re, and W. An
 alloy is represented by its atomic-fraction vector
@@ -56,7 +58,9 @@ distinction determines the exact form of the linear constraints constructed in
 Section 2.1.2. Activation thresholds are defined relative to pure W and EUROFER97
 reference response vectors, as described in the LP formulation of the following
 section.
-\subsubsection{LP constraint construction}
+
+\subsubsection{LP Constraint Construction}
+
 The activation screening criteria are imposed directly on the FLARE response model
 and reformulated as linear inequalities in composition space. Because FLARE
 responses are linear in alloy composition, each screening criterion can be
@@ -124,7 +128,11 @@ simplex equality constraint
 \]
 
 the resulting system defines the complete LP feasibility problem. The solution set
-\subsubsection{Feasible polytope and vertex enumeration}
+of Eqs. (7)--(8) forms the feasible activation region that is characterized in the
+following section.
+
+\subsubsection{Feasible Polytope and Vertex Enumeration}
+
 The inequality system of Eq. (7), combined with the simplex equality of Eq. (8),
 defines the set of all compositions satisfying every screening criterion as the
 convex polytope
@@ -160,10 +168,51 @@ with numerical tolerance \(\varepsilon=10^{-9}\); coordinates within \(\varepsil
 of 0 or 1 are snapped to remove round-off. Deduplicating the accepted points
 yields the exact vertex set of \(P\). The resulting vertex set provides an exact
 geometric representation of the LP-defined feasible region and forms the basis for
-the LP-guided composition enumeration described in the following section.
+the enumeration of feasible grid compositions described in the following section.
 
-\subsubsection{LP-guided composition enumeration}
+\subsubsection{Enumeration of Feasible Grid Compositions}
 
+The compositions of interest are the alloys on the 5 at.% grid that lie within
+the feasible polytope \(P\). Rather than generating all grid compositions and
+testing each for membership---the brute-force procedure the framework is designed
+to avoid---the feasible grid points are enumerated directly through a depth-first
+recursion over the elements, with a linear program pruning the search at every
+level.
 
+At recursion depth \(p\), the fractions of elements \(1,\ldots,p-1\) are fixed and
+the remaining fractions \(x_{p:N}\) are free. Two linear programs over the free
+variables determine the exact range of the next fraction \(x_p\) that still admits
+a feasible completion of the alloy,
 
+\[
+x_p^{\min},\,x_p^{\max} \;=\; \min/\max \; x_p
+\quad\text{s.t.}\quad
+G_{:,\,p:N}\,x_{p:N}\le s,\;\;
+\sum_{k\ge p} x_k=\rho,\;\;
+0\le x_k\le\rho, \tag{11}
+\]
 
+where \(s = h - G_{:,\,1:p-1}\,x_{1:p-1}\) is the residual slack left by the fixed
+elements and \(\rho = 1 - \sum_{j<p} x_j\) is the composition remaining to be
+distributed. Grid values of \(x_p\) outside the interval
+\([x_p^{\min},\,x_p^{\max}]\) admit no feasible completion and are never explored;
+only values within the interval are pursued, and the recursion advances to the
+next element. The final fraction is fixed by the residual \(\rho\), and the
+completed composition is verified against the complete constraint system.
+
+This LP-based bound is required rather than a simpler monotonic test. Because the
+patched mass-extensive rows carry coefficients \(M_i(A_{r,i}-\phi b_r)\) whose
+sign varies across elements, the accumulated constraint value is not monotone
+along a partial composition; it may rise and fall as elements are added. A naive
+pruning rule, such as terminating a branch once a running sum exceeds a bound,
+would therefore be invalid. The program in Eq. (11) instead tests the feasibility
+of the entire remaining completion rather than the partial sum alone, making the
+pruning exact and guaranteeing that the enumeration returns every grid
+composition contained in \(P\) and no others.
+
+The linear programs are solved using the HiGHS method through
+\texttt{scipy.optimize.linprog}, and the feasible interval at each recursion level
+is memoized to avoid re-solving recurring subproblems. FLARE responses are
+computed for the enumerated compositions only after enumeration, solely for
+reporting and never for screening. As shown in Section 3, the resulting survivor
+set reproduces the conventional generate-and-filter output exactly.
