@@ -125,6 +125,43 @@ simplex equality constraint
 
 the resulting system defines the complete LP feasibility problem. The solution set
 \subsubsection{Feasible polytope and vertex enumeration}
+The inequality system of Eq. (7), combined with the simplex equality of Eq. (8),
+defines the set of all compositions satisfying every screening criterion as the
+convex polytope
+
+\[
+P=\{\,x\in\Delta : G x\le h\,\}. \tag{9}
+\]
+
+The geometry of \(P\) is determined entirely by the FLARE coefficients and the
+chosen screening thresholds. Every composition lying within \(P\) satisfies the
+activation screen, whereas every composition outside it fails at least one
+criterion by construction. The polytope \(P\) therefore provides an analytical
+description of the feasible design space, obtained without brute-force evaluation
+of the discrete candidate-alloy space.
+
+The feasible region is characterized geometrically through its vertices. A vertex
+is a point at which the simplex equality holds together with \(N-1\) of the
+inequality
+constraints active, so that \(N\) independent equalities determine a unique point.
+For each combination of \(N-1\) active constraint rows, indexed by an active set
+\(\mathcal{A}\), the corresponding vertex is obtained by solving the square system
+
+\[
+\begin{bmatrix} \mathbf{1}^{\top} \\ G_{\mathcal{A}} \end{bmatrix} x
+= \begin{bmatrix} 1 \\ h_{\mathcal{A}} \end{bmatrix}, \tag{10}
+\]
+
+where \(\mathbf{1}^{\top}\) enforces the simplex equality and \(G_{\mathcal{A}}\),
+\(h_{\mathcal{A}}\) are the rows selected by \(\mathcal{A}\). Rank-deficient
+combinations are discarded. A candidate solution is accepted as a vertex only if
+it remains feasible for the full system, \(x\in\Delta\) and \(G x\le h+\varepsilon\),
+with numerical tolerance \(\varepsilon=10^{-9}\); coordinates within \(\varepsilon\)
+of 0 or 1 are snapped to remove round-off. Deduplicating the accepted points
+yields the exact vertex set of \(P\). The resulting vertex set provides an exact
+geometric representation of the LP-defined feasible region and forms the basis for
+the LP-guided composition enumeration described in the following section.
+
 \subsubsection{LP-guided composition enumeration}
 
 
