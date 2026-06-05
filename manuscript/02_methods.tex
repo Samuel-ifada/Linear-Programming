@@ -1,22 +1,25 @@
 \section{Methods}
 \subsection{Linear Programming Framework}
-Linear programming (LP) provides a framework for solving optimization and
-feasibility problems subject to linear constraints. In the present work, LP is
-used to reformulate activation screening as a feasibility problem in composition
-space. Rather than generating candidate alloy compositions and evaluating whether
-they satisfy prescribed activation criteria, the screening criteria are expressed
-directly as linear constraints on alloy composition. The set of compositions
-satisfying all constraints defines a feasible region within the atomic-fraction
-simplex.
+Linear programming (LP) provides a mathematical framework for solving
+optimization and feasibility problems subject to linear constraints. In the
+present work, LP is used to reformulate activation screening as a feasibility
+problem in composition space. Rather than generating candidate alloy compositions
+and subsequently evaluating whether they satisfy prescribed activation criteria,
+the activation criteria are expressed directly as constraints on alloy
+composition. The set of compositions satisfying all constraints defines a
+feasible region within the atomic-fraction simplex. This reformulation shifts the
+focus from evaluating individual compositions to constructing and exploring the
+admissible region of composition space itself.
 
-Because the FLARE activation model is linear in alloy composition, the resulting
-feasible region forms a convex polytope that can be represented analytically
-through a system of linear inequalities. This representation enables the geometry
-of the feasible space to be characterized and explored without evaluating
-individual compositions during the screening stage. Feasible alloy compositions
-are subsequently obtained through LP-guided enumeration of the admissible region,
-thereby replacing the conventional generate-and-filter workflow with a
-constraint-first screening methodology.
+The applicability of LP to the present problem arises from the linear dependence
+of FLARE activation responses on alloy composition. As a result, the activation
+criteria can be expressed as a system of linear inequalities whose solution set
+forms a convex polytope. The geometry of this feasible space can be characterized
+analytically through vertex enumeration, while feasible alloy compositions can be
+obtained through LP-guided exploration of the polytope. The framework therefore
+replaces conventional generate-and-filter screening with a constraint-first
+methodology that directly identifies compositions satisfying the prescribed
+activation requirements.
 \subsubsection{Alloy design domain and FLARE response model}
 \subsubsection{LP constraint construction}
 \subsubsection{Feasible polytope and vertex enumeration}
