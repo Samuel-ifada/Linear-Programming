@@ -26,37 +26,52 @@ activation requirements.
 The alloy design domain considered in this work consists of the eleven-element
 refractory system comprising Ti, V, Ta, Nb, Mo, Zr, Cr, Hf, Fe, Re, and W. An
 alloy is represented by its atomic-fraction vector
-\(x=(x_1,\ldots,x_N)\) with \(N=11\), where \(x_i\) is the atomic fraction of
+\(\mathbf{x}=(x_1,\ldots,x_N)\), with \(N=11\), where \(x_i\) is the atomic fraction of
 element \(i\). Physically admissible compositions lie on the standard
-\((N-1)\)-simplex,
+\((N-1)\)simplex:
 
-\[
-\Delta=\Big\{x\in\mathbb{R}^{N}:\sum_i x_i=1,\; x_i\ge0\Big\}, \tag{1}
-\]
 
-and the discrete design domain is the regular 5 at.% grid on \(\Delta\), i.e.,
+\vspace{1em}
+
+\begin{equation}
+{\Huge
+\boldsymbol{\Delta}
+=
+\Big\{
+\mathbf{x}\in\mathbb{R}^{N}:
+\sum_i x_i=1,\;
+x_i\ge0
+\Big\}
+}
+\label{eq:simplex}
+\end{equation}
+
+\vspace{1em}
+
+
+The discrete design domain is the regular 5~at.\% grid on \(\Delta\), i.e.,
 the set of compositions whose fractions are integer multiples of 0.05. On an
 eleven-element simplex, this grid contains approximately \(3\times10^7\)
 compositions, illustrating the computational burden associated with conventional
 generate-and-filter screening.
 
-Candidate alloys are screened on their neutron-activation response using the
+Candidate alloys are screened based on their neutron-activation response using the
 FLARE reduced-order model. FLARE computes each activation response of an alloy as
 a composition-weighted sum of pre-tabulated pure-element contributions, so that
 every response is linear in alloy composition. Responses are evaluated at a
-neutron flux of \(8.0\times10^{13}\), an irradiation time of 2 years, and the
+neutron flux of \(8.0\times10^{13}~\mathrm{n~cm^{-2}~s^{-1}}\), an irradiation time of 2 years, and the
 decay times associated with each screening criterion.
 
 Screening is performed using five activation responses: gas production
 \(M_{\mathrm{GAS}}\), total heat output \(HT_T\), and displacement damage
-\(DPA\) at a decay time of approximately 1 s, together with contact dose rate
-\(DOSE\) at decay times of 1 month and 100 years. Each response combines from its
-per-element contributions in the appropriate extensive basis -- by weight
-fraction for the mass-extensive responses (\(M_{\mathrm{GAS}}\), \(HT_T\), and
-\(DOSE\)) and by atomic fraction for the atom-extensive response (\(DPA\)). This
+\(DPA\) at a decay time of approximately 1~s, together with contact dose rate
+\(DOSE\) at decay times of 1~month and 100~years. Each response is assembled from its
+per-element contributions on the appropriate extensive basis by weight
+fraction for the mass-extensive responses \((M_{\mathrm{GAS}}, HT_T,\) and
+\(DOSE)\) and by atomic fraction for the atom-extensive response \((DPA)\). This
 distinction determines the exact form of the linear constraints constructed in
-Section 2.1.2. Activation thresholds are defined relative to pure W and EUROFER97
-reference response vectors, as described in the LP formulation of the following
+Section~2.1.2. Activation thresholds are defined relative to pure W and EUROFER97
+reference response vectors, as described in the LP formulation in the following
 section.
 
 \subsubsection{LP Constraint Construction}
@@ -67,152 +82,335 @@ responses are linear in alloy composition, each screening criterion can be
 expressed as a constraint on the atomic-fraction vector \(x\). The linear response
 coefficients are collected in the response matrix
 
-\[
-A \in \mathbb{R}^{R\times N},\qquad A_{r,i}=f_r(e_i), \tag{2}
-\]
+\vspace{1em}
+
+\begin{equation}
+{\Huge
+\mathbf{A}\in\mathbb{R}^{R\times N},\quad
+A_{r,i}=f_r(e_i)
+}
+\label{eq:activation_matrix}
+\end{equation}
+
+\vspace{1em}
+
 
 where \(A_{r,i}\) denotes response \(r\) of pure element \(i\), with \(R=5\)
 screening responses and \(N=11\) elements. Each screening threshold is defined
 relative to a reference alloy,
 
-\[
-\tau_r=\phi\,b_r,\qquad \phi=10, \tag{3}
-\]
+\vspace{1em}
 
-where \(b=(b_1,\ldots,b_R)\) is the reference response vector, taken as either pure
-tungsten (\(b_W\)) or EUROFER97 (\(b_E\)), and \(\phi\) is the threshold
+\begin{equation}
+{\Huge
+\tau_r=\phi\, b_r,\;
+\phi=10
+}
+\label{eq:threshold}
+\end{equation}
+
+\vspace{1em}
+
+
+where \(\mathbf{b}=(b_1,\ldots,b_R)\) is the reference response vector, taken as either pure
+tungsten \((b_W)\) or EUROFER97 \((b_E)\), and \(\phi\) is the threshold
 multiplier.
 
 Each criterion is then expressed as a linear inequality in the atomic-fraction
-vector \(x\). The distinction in extensive basis introduced in Section 2.1.1
-determines its form. The atom-extensive response DPA combines directly by atomic
-fraction and is therefore already linear in \(x\),
+vector \(\mathbf{x}\). The distinction in extensive basis introduced in Section~2.1.1
+determines its form. The atom-extensive response \(DPA\) combines directly by atomic
+fraction and is therefore already linear in \(\mathbf{x}\),
 
-\[
-\sum_i x_i A_{r,i}\le \phi b_r. \tag{4}
-\]
+\vspace{1em}
 
-The mass-extensive responses (\(M_{\mathrm{GAS}}\), \(HT_T\), and \(DOSE\)) combine
-by weight fraction,
+\begin{equation}
+{\Huge
+\sum_i x_i A_{r,i}
+\le
+\phi b_r
+}
+\label{eq:atom_constraint}
+\end{equation}
 
-\[
-w_i=\frac{x_i M_i}{\sum_j x_j M_j}, \tag{5}
-\]
+\vspace{1em}
 
-where \(M_i\) is the atomic mass of element \(i\). Substituting Eq. (5) into the
-natural constraint \(\sum_i w_i A_{r,i}\le \phi b_r\) introduces the
-composition-dependent denominator \(\sum_j x_j M_j\) and is therefore nonlinear in
-\(x\). Because this denominator is strictly positive on the simplex, multiplying
+The mass extensive responses \((M_{\mathrm{GAS}}, HT_T,\) and \(DOSE)\) combine
+by weight fraction, defined as
+
+\vspace{0.5em}
+
+\begin{equation}
+{\Huge
+w_i
+=
+\frac{x_i M_i}
+{\sum_j x_j M_j}
+}
+\label{eq:weight_fraction}
+\end{equation}
+
+\vspace{0.5em}
+
+
+where \(M_i\) is the atomic mass of element \(i\). Substituting Eq.~\eqref{eq:weight_fraction}
+into the natural constraint \(\sum_i w_i A_{r,i}\le \phi b_r\) introduces the
+composition-dependent denominator \(\sum_j x_j M_j\), making the expression nonlinear in
+\(\mathbf{x}\). Because this denominator is strictly positive on the simplex, multiplying
 through by it preserves the inequality while eliminating the nonlinearity, yielding
 the equivalent linear form
 
-\[
-\sum_i x_i M_i (A_{r,i}-\phi b_r)\le 0. \tag{6}
-\]
+\vspace{0.5em}
 
-Equations (4) and (6) are both linear in \(x\). Stacking all \(R\) screening
-criteria together with the box bounds \(0\le x_i\le1\) yields the linear inequality
-system
+\begin{equation}
+{\Huge
+\sum_i x_i M_i \left(A_{r,i}-\phi b_r\right)
+\le 0
+}
+\label{eq:mass_constraint}
+\end{equation}
 
-\[
-G x\le h, \tag{7}
-\]
+\vspace{0.5em}
 
-in which the DPA row contributes the coefficients \(A_{r,i}\) with right-hand side
-\(\phi b_r\), while each mass-extensive response contributes the patched
+
+Equations~\eqref{eq:atom_constraint} and~\eqref{eq:mass_constraint} are both linear in
+\(\mathbf{x}\). Stacking all \(R\) screening criteria together with the box bounds
+\(0\le x_i\le1\) yields the linear inequality system
+
+\vspace{0.5em}
+
+\begin{equation}
+{\Huge
+\mathbf{G}\mathbf{x}\le \mathbf{h}
+}
+\label{eq:linear_system}
+\end{equation}
+
+\vspace{0.5em}
+
+
+in which the \(DPA\) row contributes the coefficients \(A_{r,i}\) with right-hand side
+\(\phi b_r\), while each mass-extensive response contributes the transformed
 coefficients \(M_i(A_{r,i}-\phi b_r)\) with right-hand side zero. Together with the
 simplex equality constraint
+\vspace{0.5em}
 
-\[
-\sum_i x_i = 1, \tag{8}
-\]
+\begin{equation}
+{\Huge
+\sum_i x_i = 1
+}
+\label{eq:simplex_equality}
+\end{equation}
 
-the resulting system defines the complete LP feasibility problem. The solution set
-of Eqs. (7)--(8) forms the feasible activation region that is characterized in the
-following section.
+\vspace{0.5em}
+
+The resulting system defines the complete LP feasibility problem. The solution set
+of Eqs.~\eqref{eq:linear_system}--\eqref{eq:simplex_equality} forms the feasible
+activation region characterized in the following section.
 
 \subsubsection{Feasible Polytope and Vertex Enumeration}
+The inequality system of Eq.~\eqref{eq:linear_system}, combined with the simplex
+equality constraint of Eq.~\eqref{eq:simplex_equality}, defines the set of all
+compositions satisfying every screening criterion as the convex polytope
 
-The inequality system of Eq. (7), combined with the simplex equality of Eq. (8),
-defines the set of all compositions satisfying every screening criterion as the
-convex polytope
+\vspace{0.5em}
 
-\[
-P=\{\,x\in\Delta : G x\le h\,\}. \tag{9}
-\]
+\begin{equation}
+{\Huge
+P=
+\left\{
+\mathbf{x}\in\Delta :
+\mathbf{G}\mathbf{x}\le\mathbf{h}
+\right\}
+}
+\label{eq:polytope}
+\end{equation}
+
+\vspace{0.5em}
+
 
 The geometry of \(P\) is determined entirely by the FLARE coefficients and the
 chosen screening thresholds. Every composition lying within \(P\) satisfies the
-activation screen, whereas every composition outside it fails at least one
+activation screen, whereas every composition outside \(P\) fails at least one
 criterion by construction. The polytope \(P\) therefore provides an analytical
 description of the feasible design space, obtained without brute-force evaluation
 of the discrete candidate-alloy space.
 
 The feasible region is characterized geometrically through its vertices. A vertex
-is a point at which the simplex equality holds together with \(N-1\) of the
-inequality
-constraints active, so that \(N\) independent equalities determine a unique point.
-For each combination of \(N-1\) active constraint rows, indexed by an active set
-\(\mathcal{A}\), the corresponding vertex is obtained by solving the square system
+is a point at which the simplex equality holds together with \(N-1\) active
+inequality constraints, so that \(N\) independent equalities determine a unique
+point. For each combination of \(N-1\) active constraint rows, indexed by an active
+set \(\mathcal{A}\), the corresponding vertex is obtained by solving the square
+system
 
-\[
-\begin{bmatrix} \mathbf{1}^{\top} \\ G_{\mathcal{A}} \end{bmatrix} x
-= \begin{bmatrix} 1 \\ h_{\mathcal{A}} \end{bmatrix}, \tag{10}
-\]
+\vspace{0.5em}
 
-where \(\mathbf{1}^{\top}\) enforces the simplex equality and \(G_{\mathcal{A}}\),
-\(h_{\mathcal{A}}\) are the rows selected by \(\mathcal{A}\). Rank-deficient
-combinations are discarded. A candidate solution is accepted as a vertex only if
-it remains feasible for the full system, \(x\in\Delta\) and \(G x\le h+\varepsilon\),
-with numerical tolerance \(\varepsilon=10^{-9}\); coordinates within \(\varepsilon\)
-of 0 or 1 are snapped to remove round-off. Deduplicating the accepted points
-yields the exact vertex set of \(P\). The resulting vertex set provides an exact
-geometric representation of the LP-defined feasible region and forms the basis for
-the enumeration of feasible grid compositions described in the following section.
+\begin{equation}
+{\Huge
+\begin{bmatrix}
+\mathbf{1}^{\top} \\
+\mathbf{G}_{\mathcal{A}}
+\end{bmatrix}
+\mathbf{x}
+=
+\begin{bmatrix}
+1 \\
+\mathbf{h}_{\mathcal{A}}
+\end{bmatrix}
+}
+\label{eq:vertex_system}
+\end{equation}
+
+\vspace{0.5em}
+
+where \(\mathbf{1}^{\top}\) enforces the simplex equality and
+\(\mathbf{G}_{\mathcal{A}}\) and \(\mathbf{h}_{\mathcal{A}}\) are the rows selected by
+\(\mathcal{A}\). Rank-deficient combinations are discarded. A candidate solution is
+accepted as a vertex only if it remains feasible for the full system,
+\(\mathbf{x}\in\Delta\) and \(\mathbf{G}\mathbf{x}\le \mathbf{h}+\varepsilon\), with
+numerical tolerance \(\varepsilon=10^{-9}\). Coordinates within \(\varepsilon\) of
+0 or 1 are snapped to remove round-off. Deduplicating the accepted points yields
+the exact vertex set of \(P\). The resulting vertex set provides an exact geometric
+representation of the LP-defined feasible region and forms the basis for the
+enumeration of feasible grid compositions described in the following section.
 
 \subsubsection{Enumeration of Feasible Grid Compositions}
 
-The compositions of interest are the alloys on the 5 at.% grid that lie within
+The compositions of interest are the alloys on the 5~at.\% grid that lie within
 the feasible polytope \(P\). Rather than generating all grid compositions and
-testing each for membership---the brute-force procedure the framework is designed
-to avoid---the feasible grid points are enumerated directly through a depth-first
+testing each for membership, the brute-force procedure, the framework is designed
+to avoid; the feasible grid points are enumerated directly through a depth-first
 recursion over the elements, with a linear program pruning the search at every
 level.
 
-At recursion depth \(p\), the fractions of elements \(1,\ldots,p-1\) are fixed and
+At recursion depth \(p\), the fractions of elements \(1,\ldots,p-1\) are fixed, and
 the remaining fractions \(x_{p:N}\) are free. Two linear programs over the free
 variables determine the exact range of the next fraction \(x_p\) that still admits
-a feasible completion of the alloy,
+a feasible completion of the alloy.
 
-\[
-x_p^{\min},\,x_p^{\max} \;=\; \min/\max \; x_p
-\quad\text{s.t.}\quad
-G_{:,\,p:N}\,x_{p:N}\le s,\;\;
-\sum_{k\ge p} x_k=\rho,\;\;
-0\le x_k\le\rho, \tag{11}
-\]
+\vspace{0.5em}
 
-where \(s = h - G_{:,\,1:p-1}\,x_{1:p-1}\) is the residual slack left by the fixed
-elements and \(\rho = 1 - \sum_{j<p} x_j\) is the composition remaining to be
-distributed. Grid values of \(x_p\) outside the interval
-\([x_p^{\min},\,x_p^{\max}]\) admit no feasible completion and are never explored;
-only values within the interval are pursued, and the recursion advances to the
-next element. The final fraction is fixed by the residual \(\rho\), and the
-completed composition is verified against the complete constraint system.
+\begin{equation}
+\begin{aligned}
+x_p^{\min},\,x_p^{\max}
+&=
+\min/\max\; x_p \\
+\text{s.t.}\quad
+\mathbf{G}_{:,\,p:N}\mathbf{x}_{p:N}
+&\le \mathbf{s}, \\
+\sum_{k\ge p} x_k
+&= \rho, \\
+0 \le x_k
+&\le \rho .
+\end{aligned}
+\label{eq:recursive_lp}
+\end{equation}
+
+\vspace{0.5em}
+
+
 
 This LP-based bound is required rather than a simpler monotonic test. Because the
-patched mass-extensive rows carry coefficients \(M_i(A_{r,i}-\phi b_r)\) whose
+transformed mass-extensive rows carry coefficients \(M_i(A_{r,i}-\phi b_r)\) whose
 sign varies across elements, the accumulated constraint value is not monotone
 along a partial composition; it may rise and fall as elements are added. A naive
 pruning rule, such as terminating a branch once a running sum exceeds a bound,
-would therefore be invalid. The program in Eq. (11) instead tests the feasibility
-of the entire remaining completion rather than the partial sum alone, making the
-pruning exact and guaranteeing that the enumeration returns every grid
-composition contained in \(P\) and no others.
+would therefore be invalid. The program in Eq.~\eqref{eq:recursive_lp} instead
+tests the feasibility of the entire remaining completion rather than the partial
+sum alone, making the pruning exact and guaranteeing that the enumeration returns
+every grid composition contained in \(P\) and no others.
 
 The linear programs are solved using the HiGHS method through
 \texttt{scipy.optimize.linprog}, and the feasible interval at each recursion level
 is memoized to avoid re-solving recurring subproblems. FLARE responses are
 computed for the enumerated compositions only after enumeration, solely for
-reporting and never for screening. As shown in Section 3, the resulting survivor
+reporting and never for screening. As shown in Section~3, the resulting survivor
 set reproduces the conventional generate-and-filter output exactly.
+
+\subsection{Analytical Mechanical Property Models}
+
+Following activation screening, the remaining compositions were assessed using
+analytical models of mechanical performance. Because direct experimental
+characterization or high-fidelity mechanical simulations are impractical for the
+large number of candidate alloys considered in this work, physically motivated
+analytical models were employed as first-order estimates of strength and
+ductility. These models provide a computationally efficient means of further
+reducing the candidate composition space before the thermodynamic screening stage.
+
+\subsubsection{Maresca-Curtin Model as First Approximation for Yield Strength}
+
+The compositions surviving the LP-based activation screening stage were
+subsequently evaluated using the Maresca-Curtin (MC) model as a first
+approximation of alloy yield strength \cite{maresca2020mechanistic}. The MC model
+has been successfully employed for the computational screening and design of
+refractory multi-principal-element alloys \cite{vela2023data}, and the present
+implementation follows the general methodology adopted in those studies. In this work, the model was used as an intermediate screening stage to identify
+compositions possessing sufficient mechanical strength before thermodynamic
+assessment.
+
+The MC model is a physics-based framework that predicts the strength of
+body-centered cubic (BCC) random solid solutions by relating the yield strength to the energetics of thermally activated dislocation motion. The temperature-dependent yield strength was calculated using the dislocation glide formulation proposed by
+Maresca and Curtin.
+
+
+\vspace{0.5em}
+
+\begin{equation}
+\begin{aligned}
+\tau_y(T,\dot{\varepsilon})
+&= \tau_{y0}
+\exp\!\left[
+-\frac{1}{0.55}
+\left(
+\frac{kT}{\Delta E_b}
+\ln\!\left(\frac{\dot{\varepsilon}_0}{\dot{\varepsilon}}\right)
+\right)^{0.91}
+\right]
+\end{aligned}
+\label{eq:yield_stress}
+\end{equation}
+
+\vspace{0.5em}
+
+where \(\tau_{y0}\) is the athermal yield strength, \(\Delta E_b\) is the activation
+barrier for dislocation glide, \(T\) is the absolute temperature,
+\(\dot{\varepsilon}\) is the applied strain rate, \(\dot{\varepsilon}_0\) is the
+reference strain rate, and \(k\) is Boltzmann's constant. The corresponding tensile
+yield strength was obtained through the appropriate Taylor-factor conversion.
+
+Following the approach of Vela et al. \cite{vela2023data}, the physical inputs required by the model, including atomic volumes, elastic constants (\(C_{11}\),
+\(C_{12}\), and \(C_{44}\)), shear moduli, and Poisson ratios, were assembled from
+literature data and combined using the rule of mixtures to approximate the
+effective properties of each alloy composition. Using these inputs, the model
+evaluates the energetic barriers associated with dislocation motion and predicts the resulting temperature-dependent yield strength.
+
+Yield strengths were evaluated at 25 and 600 \(650^{\circ}\mathrm{C}\) using a
+strain rate of \(10^{-3}\,\mathrm{s}^{-1}\). Compositions failing to satisfy the
+prescribed yield-strength criterion were discarded, while the remaining
+compositions were retained for subsequent thermodynamic screening.
+
+\subsection{Pugh Ratio as Indicator of Ductility}
+
+In addition to strength, candidate alloys were evaluated using the Pugh ratio as a
+first-order indicator of ductility. Proposed by Pugh, the ratio of bulk modulus to
+shear modulus provides an empirical measure of the balance between resistance to
+plastic deformation and resistance to fracture. Materials with larger \(B/G\)
+values generally exhibit more ductile behavior, whereas smaller values are
+associated with brittle fracture tendencies.
+
+The Pugh ratio was calculated as
+
+\begin{equation}
+P = \frac{B}{G},
+\end{equation}
+
+where \(B\) is the bulk modulus and \(G\) is the shear modulus of the alloy. The
+required elastic properties were obtained from composition-weighted estimates of
+The constituent elemental properties using the rule of mixtures. For each
+composition, the calculated Pugh ratio was compared against the prescribed
+screening criterion to identify alloys possessing an acceptable balance of strength
+and ductility.
+
+The Pugh-ratio assessment complements the Maresca-Curtin strength predictions by
+providing a simple analytical measure of ductility. Compositions failing to satisfy
+the ductility criterion were removed from further consideration, while the
+remaining alloys proceeded to the CALPHAD-based thermodynamic screening stage.
