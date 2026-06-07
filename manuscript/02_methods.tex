@@ -416,3 +416,91 @@ providing a simple analytical measure of ductility. As with the strength model, 
 compositions were eliminated at this stage; the analytical strength and ductility
 descriptors were computed for all LP-feasible compositions and used as screening
 criteria in the subsequent down-selection.
+
+\subsection{CALPHAD Thermodynamic Screening}
+
+The alloy compositions identified by the LP framework were subsequently evaluated
+using the CALPHAD (CALculation of PHAse Diagrams) method to characterize their
+thermodynamic stability, phase constitution, melting behavior, and thermophysical
+properties. CALPHAD has been widely employed for alloy design and phase-stability
+prediction in complex concentrated and refractory alloy systems
+\cite{li2023calphad,conway2022thermodynamic}. Thermodynamic calculations were performed in Thermo-Calc
+using the TCHEA6 thermodynamic database \cite{TCHEA6}. For each composition, the
+equilibrium state was obtained through Gibbs free-energy minimization over the
+active elemental components.
+
+Equilibrium phase calculations were performed at 25, 500, 600, 650, 700, 800, and
+900 \(^{\circ}\mathrm{C}\), together with an elevated temperature of
+2000 \(^{\circ}\mathrm{C}\). At each temperature, the stable phases and their
+corresponding mole fractions were determined. These calculations were used to
+characterize the evolution of phase constitution across the temperature range of
+interest, including the formation of BCC solid-solution phases and competing
+intermetallic phases such as sigma, Laves, mu, and chi.
+
+The melting behavior of each alloy was evaluated using the Thermo-Calc Liquidus
+and Solidus Temperature property model, which provides the liquidus and solidus
+temperatures defining the thermodynamic processing window. Thermophysical
+properties were subsequently evaluated using the Equilibrium with Freeze-in
+Temperature property model, yielding density, heat capacity, thermal conductivity,
+thermal resistivity, thermal diffusivity, electrical resistivity, electrical
+conductivity, and thermal expansion. These properties were computed at both the
+liquidus and solidus temperatures, as well as at fixed temperatures spanning
+25--900 \(^{\circ}\mathrm{C}\).
+
+The resulting phase fraction, melting temperature, and thermophysical property data
+were used to characterize the thermodynamic behavior of the candidate alloy
+compositions and to provide the temperature-dependent inputs required for the
+subsequent thermal analyses.
+
+\subsubsection{ELM Melting Margin Modeling}
+
+To quantify the resistance of candidate alloys to transient plasma loading, the ELM melting margin was evaluated as the temperature difference between the alloy melting temperature and the peak surface temperature reached during an ELM-like heat pulse. The surface temperature rise was computed using a one-dimensional, semi-infinite slab approximation, which is valid when the thermal penetration depth during the pulse is much smaller than the sample thickness. The model considers a background heat flux upon which a high-intensity pulse is superimposed for a short duration. The input parameters used in the heat balance formulation are listed in 
+Table~\ref{tab:ELM_params}.
+
+\begin{table}[H]
+\centering
+\caption{Input parameters used to compute heat balance during ELM transient loading.}
+\label{tab:ELM_params}
+\begin{tabularx}{\columnwidth}{Xl}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\ 
+\midrule
+Temperature on the cooling side, $T_{\mathrm{bott}}$ & \SI{415}{\kelvin}~\cite{VandenKerkhof2021,DeTemmerman2018} \\
+Steady-state power flux density, $Q_{\mathrm{SS}}$ & \SI{10}{\mega\watt\per\square\meter}~\cite{Pitts2019,VandenKerkhof2021} \\
+ELM energy density, $E_{\mathrm{ELM}}$ & \SI{0.2}{\mega\joule\per\square\meter}~\cite{Farid2015} \\
+Pulse duration, $t_{\mathrm{pulse}}$ & \SI{0.5}{\milli\second}~\cite{Farid2015,DeTemmerman2018} \\
+First wall thickness, $d$ & \SI{6}{\milli\meter}~\cite{VandenKerkhof2021,DeTemmerman2018} \\ 
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The ELM heat flux was calculated as:
+\begin{equation}
+    Q_{\mathrm{ELM}} = \frac{E_{\mathrm{ELM}}}{t_{\mathrm{pulse}}}.
+\end{equation}
+
+Material thermal properties (thermal conductivity $k$, mass-specific heat capacity $c_p$, and density $\rho$) were obtained from CALPHAD calculations at multiple temperatures. For each alloy, the effective properties were computed as the arithmetic mean of values across the temperature range, with molar heat capacity converted to mass-specific heat capacity using the alloy molecular weight. Density was evaluated at room temperature.
+
+The total surface temperature rise was calculated as the sum of steady-state and transient components. The steady-state temperature increase due to the continuous background heat flux was given by:
+\begin{equation}
+    \Delta T_{\mathrm{SS}} = \frac{Q_{\mathrm{SS}} \, d}{k},
+\end{equation}
+representing the linear temperature gradient through the first wall thickness.
+
+The transient temperature rise caused by the ELM pulse was modeled as:
+\begin{equation}
+    \Delta T_{\mathrm{ELM}} = \frac{2 Q_{\mathrm{ELM}}}{k} 
+    \sqrt{\frac{\alpha t_{\mathrm{pulse}}}{\pi}},
+\end{equation}
+where the thermal diffusivity is $\alpha = k/(\rho c_p)$.
+
+The peak surface temperature was then obtained as:
+\begin{equation}
+    T_{\max} = T_{\mathrm{bott}} + \Delta T_{\mathrm{SS}} + \Delta T_{\mathrm{ELM}}.
+\end{equation}
+
+Finally, the ELM melting margin was defined as:
+\begin{equation}
+    T_{\mathrm{margin}} = T_m - T_{\max},
+\end{equation}
+\noindent where $T_m$ is the alloy solidus temperature.
