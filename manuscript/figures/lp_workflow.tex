@@ -1,0 +1,18 @@
+% =============================================================================
+% lp_workflow.tex  --  Standalone driver for the LP-FLARE workflow figure.
+%
+% Compile to preview:
+%   pdflatex lp_workflow.tex
+%
+% The TikZ body lives in lp_workflow_body.tex so the same body can be
+% \input{} from a figure*{} environment in the manuscript.
+% =============================================================================
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usetikzlibrary{positioning, arrows.meta, fit, calc, shapes.geometric}
+
+\begin{document}
+\input{lp_workflow_body}
+\end{document}

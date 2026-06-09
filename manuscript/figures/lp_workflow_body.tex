@@ -1,0 +1,113 @@
+% =============================================================================
+% lp_workflow_body.tex
+% TikZ body for the LP-FLARE workflow figure.
+% Two fully independent side-by-side columns:
+%   LEFT  -- Constraint-First Screening (LP, this work)
+%   RIGHT -- Composition-First Screening (conventional brute-force)
+% Each column has its own Inputs box and its own Survivor box; no shared boxes
+% and no arrows crossing between the two chains.
+% =============================================================================
+
+\begin{tikzpicture}[
+    >={Stealth[length=1.8mm, width=1.5mm]},
+    font=\sffamily,
+    node distance = 4mm and 12mm,
+    inbox/.style = {
+        rectangle, draw, rounded corners=1.5pt, align=center,
+        text width=33mm, minimum height=15mm, inner sep=2pt,
+        font=\scriptsize, fill=gray!8
+    },
+    bfbox/.style = {
+        rectangle, draw, rounded corners=1.5pt, align=center,
+        text width=33mm, minimum height=10mm, inner sep=2pt,
+        font=\scriptsize, fill=red!5
+    },
+    bfexp/.style = {
+        rectangle, draw=red!75, line width=0.8pt, rounded corners=1.5pt, align=center,
+        text width=33mm, minimum height=12mm, inner sep=2pt,
+        font=\scriptsize, fill=red!15
+    },
+    lpbox/.style = {
+        rectangle, draw, rounded corners=1.5pt, align=center,
+        text width=33mm, minimum height=10mm, inner sep=2pt,
+        font=\scriptsize, fill=blue!5
+    },
+    outbox/.style = {
+        rectangle, draw, rounded corners=1.5pt, align=center,
+        text width=33mm, minimum height=12mm, inner sep=2pt,
+        font=\scriptsize, fill=green!8, line width=0.7pt
+    },
+    arrow/.style = {->, semithick, line width=0.5pt},
+    coltitle/.style = {font=\footnotesize\bfseries, align=center}
+]
+
+% =========================================================================
+% LEFT column: Constraint-First Screening (LP, this work)
+% =========================================================================
+
+\node[coltitle] (lp-title) {Constraint-First\\Screening};
+
+\node[inbox, below=1.5mm of lp-title] (lp-in) {%
+    \textbf{Inputs}\\[1pt]
+    Ti-V-Ta-Nb-Mo-Zr-\\
+    Cr-Hf-Fe-Re-W\\
+    design space};
+
+\node[lpbox, below=of lp-in] (lp1) {%
+    \textbf{Build linear constraints}\\
+    \((\mathbf{G},\mathbf{h})\),\;\(\sum_i x_i = 1\)};
+
+\node[lpbox, below=of lp1] (lp2) {%
+    \textbf{Feasible polytope}\\
+    \(P=\{\mathbf{x}\in\Delta:\mathbf{G}\mathbf{x}\le\mathbf{h}\}\)};
+
+\node[lpbox, below=of lp2] (lp3) {%
+    \textbf{Enumerate feasible alloys}\\
+    5\,at.\% grid compositions\\
+    contained in \(P\)};
+
+\node[outbox, below=of lp3] (lp-out) {%
+    \textbf{Survivor compositions}\\[1pt]
+    61{,}507 compositions};
+
+\draw[arrow] (lp-in) -- (lp1);
+\draw[arrow] (lp1)   -- (lp2);
+\draw[arrow] (lp2)   -- (lp3);
+\draw[arrow] (lp3)   -- (lp-out);
+
+% =========================================================================
+% RIGHT column: Composition-First Screening (conventional brute-force)
+% =========================================================================
+
+\node[coltitle, right=of lp-title] (bf-title) {Composition-First\\Screening};
+
+\node[inbox, below=1.5mm of bf-title] (bf-in) {%
+    \textbf{Inputs}\\[1pt]
+    Ti-V-Ta-Nb-Mo-Zr-\\
+    Cr-Hf-Fe-Re-W\\
+    design space};
+
+\node[bfbox, below=of bf-in] (bf1) {%
+    \textbf{Generate compositions}\\
+    (5\,at.\% resolution)\\
+    \(\sim 3{\times}10^{7}\) alloys};
+
+\node[bfexp, below=of bf1] (bf2) {%
+    \textbf{Evaluate FLARE}\\ for every composition\\[1pt]
+    \textcolor{red!70!black}{$\sim 3\times10^{7}$ model calls}};
+
+\node[bfbox, below=of bf2] (bf3) {%
+    \textbf{Apply filter}\\
+    compare each response\\
+    against thresholds};
+
+\node[outbox, below=of bf3] (bf-out) {%
+    \textbf{Survivor compositions}\\[1pt]
+    61{,}507 compositions};
+
+\draw[arrow] (bf-in) -- (bf1);
+\draw[arrow] (bf1)   -- (bf2);
+\draw[arrow] (bf2)   -- (bf3);
+\draw[arrow] (bf3)   -- (bf-out);
+
+\end{tikzpicture}
