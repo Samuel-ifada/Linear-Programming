@@ -223,7 +223,8 @@ Section~3, the resulting survivor set reproduces the conventional
 generate-and-filter output exactly.
 
 
-\subsection{Analytical Mechanical Property Models}
+
+\subsection{High-Throughput Property Calculations}
 
 Following activation screening, the remaining compositions were assessed using
 analytical models of mechanical performance. Because direct experimental
@@ -236,18 +237,9 @@ subsequent thermodynamic characterization.
 
 \subsubsection{Maresca-Curtin Model as First Approximation for Yield Strength}
 
-The compositions surviving the LP-based activation screening stage were
-subsequently evaluated using the Maresca-Curtin (MC) model as a first
-approximation of alloy yield strength \cite{maresca2020mechanistic}. The MC model
-has been successfully employed for the computational screening and design of
-refractory multi-principal-element alloys \cite{vela2023data}, and the present
-implementation follows the general methodology adopted in those studies. In this work, the model was used to compute first-order strength descriptors for
-the candidate compositions in advance of thermodynamic characterization.
+The feasible alloy compositions were subsequently evaluated using the Maresca-Curtin (MC) model as a first approximation of alloy yield strength \cite{maresca2020mechanistic}. The model has been successfully employed for the computational screening and design of refractory multi-principal-element alloys \cite{vela2023data}, and the present implementation follows the general methodology adopted in those studies. In this work, the model was used to compute first-order strength descriptors for the candidate compositions prior to thermodynamic characterization.
 
-The MC model is a physics-based framework that predicts the strength of
-body-centered cubic (BCC) random solid solutions by relating the yield strength to the energetics of thermally activated dislocation motion. The temperature-dependent yield strength was calculated using the dislocation glide formulation proposed by
-Maresca and Curtin.
-
+The MC model is a physics-based framework for body-centered cubic (BCC) random solid solutions that relates alloy strength to the energetics of thermally activated dislocation motion. In this work, the temperature-dependent yield strength was evaluated using the dislocation-glide formulation proposed by Maresca and Curtin.
 
 \vspace{0.5em}
 
@@ -255,11 +247,11 @@ Maresca and Curtin.
 \begin{aligned}
 \tau_y(T,\dot{\varepsilon})
 &= \tau_{y0}
-\exp\!\left[
+\exp!\left[
 -\frac{1}{0.55}
 \left(
 \frac{kT}{\Delta E_b}
-\ln\!\left(\frac{\dot{\varepsilon}_0}{\dot{\varepsilon}}\right)
+\ln!\left(\frac{\dot{\varepsilon}_0}{\dot{\varepsilon}}\right)
 \right)^{0.91}
 \right]
 \end{aligned}
@@ -268,87 +260,26 @@ Maresca and Curtin.
 
 \vspace{0.5em}
 
-where \(\tau_{y0}\) is the athermal yield strength, \(\Delta E_b\) is the activation
-barrier for dislocation glide, \(T\) is the absolute temperature,
-\(\dot{\varepsilon}\) is the applied strain rate, \(\dot{\varepsilon}_0\) is the
-reference strain rate, and \(k\) is Boltzmann's constant. The corresponding tensile
-yield strength was obtained through the appropriate Taylor-factor conversion.
+where (\tau_{y0}) is the athermal yield strength, (\Delta E_b) is the activation barrier for dislocation glide, (T) is the absolute temperature, (\dot{\varepsilon}) is the applied strain rate, (\dot{\varepsilon}_0) is the reference strain rate, and (k) is Boltzmann's constant. The corresponding tensile yield strength was obtained through the appropriate Taylor-factor conversion.
 
-Following the approach of Vela et al. \cite{vela2023data}, the physical inputs required by the model, including atomic volumes, elastic constants (\(C_{11}\),
-\(C_{12}\), and \(C_{44}\)), shear moduli, and Poisson ratios, were assembled from
-literature data and combined using the rule of mixtures to approximate the
-effective properties of each alloy composition. Using these inputs, the model
-evaluates the energetic barriers associated with dislocation motion and predicts the resulting temperature-dependent yield strength.
+Following the approach of Vela et al. \cite{vela2023data}, the physical inputs required by the model, including atomic volumes, elastic constants ((C_{11}), (C_{12}), and (C_{44})), shear moduli, and Poisson ratios, were assembled from literature data and combined using the rule of mixtures to approximate the effective properties of each alloy composition.
+
+Yield strengths were evaluated at 25, 600, and (650^{\circ}\mathrm{C}) using a strain rate of (10^{-3},\mathrm{s}^{-1}). The resulting yield strengths were recorded as mechanical-property descriptors.
 
 
-Yield strengths were evaluated at 25, 600, and \(650^{\circ}\mathrm{C}\) using a
-strain rate of \(10^{-3}\,\mathrm{s}^{-1}\). The yield strength of each candidate
-composition was calculated at these conditions and recorded as a property
-descriptor; no compositions were eliminated at this stage.
 
-\subsubsection{Pugh Ratio as Indicator of Ductility}
+\subsubsection{CALPHAD Thermodynamic Calculations}
 
-In addition to strength, candidate alloys were evaluated using the Pugh ratio as a
-first-order indicator of ductility. Proposed by Pugh, the ratio of bulk modulus to
-shear modulus provides an empirical measure of the balance between resistance to
-plastic deformation and resistance to fracture. Materials with larger \(B/G\)
-values generally exhibit more ductile behavior, whereas smaller values are
-associated with brittle fracture tendencies.
+The feasible alloy compositions were subsequently evaluated using the CALPHAD (CALculation of PHAse Diagrams) method to characterize their thermodynamic stability, phase constitution, melting behavior, and thermophysical properties. CALPHAD has been widely employed for alloy design and phase-stability prediction in complex concentrated and refractory alloy systems \cite{li2023calphad,conway2022thermodynamic}. Thermodynamic calculations were performed in Thermo-Calc using the TCHEA6 thermodynamic database \cite{TCHEA6}. For each composition, the equilibrium state was obtained through Gibbs free-energy minimization over the active elemental components.
 
-The Pugh ratio was calculated as
+Equilibrium phase calculations were performed at 25, 500, 600, 650, 700, 800, and 900 (^{\circ}\mathrm{C}), together with an elevated temperature of 2000 (^{\circ}\mathrm{C}). At each temperature, the stable phases and their corresponding mole fractions were determined. These calculations were used to characterize phase stability across the temperature range of interest, including the formation of BCC solid-solution phases and competing intermetallic phases such as sigma, Laves, mu, and chi.
 
-\begin{equation}
-P = \frac{B}{G},
-\end{equation}
+The melting behavior of each alloy was evaluated using the Thermo-Calc Liquidus and Solidus Temperature property model, which provides the liquidus and solidus temperatures defining the processing window. Thermophysical properties were subsequently evaluated using the Equilibrium with Freeze-in Temperature property model, yielding density, heat capacity, thermal conductivity, thermal resistivity, thermal diffusivity, electrical resistivity, electrical conductivity, and thermal expansion. These properties were computed at both the liquidus and solidus temperatures, as well as at fixed temperatures spanning 25--900 (^{\circ}\mathrm{C}).
 
-where \(B\) is the bulk modulus and \(G\) is the shear modulus of the alloy. The
-required elastic properties were obtained from composition-weighted estimates of
-the constituent elemental properties using the rule of mixtures. For each
-composition, the calculated Pugh ratio was recorded as a ductility descriptor
-alongside the Maresca--Curtin strength prediction.
+The resulting phase-fraction, melting-temperature, and thermophysical-property data were retained for subsequent alloy evaluation and provided the temperature-dependent inputs required for the ELM melting-margin calculations described in the following section.
 
-The Pugh-ratio assessment complements the Maresca--Curtin strength predictions by
-providing a simple analytical measure of ductility. As with the strength model, no
-compositions were eliminated at this stage; the analytical strength and ductility
-descriptors were computed for all LP-feasible compositions and used as screening
-criteria in the subsequent down-selection.
 
-\subsection{CALPHAD Thermodynamic Characterization}
-
-The alloy compositions identified by the LP framework were subsequently evaluated
-using the CALPHAD (CALculation of PHAse Diagrams) method to characterize their
-thermodynamic stability, phase constitution, melting behavior, and thermophysical
-properties. CALPHAD has been widely employed for alloy design and phase-stability
-prediction in complex concentrated and refractory alloy systems
-\cite{li2023calphad,conway2022thermodynamic}. Thermodynamic calculations were performed in Thermo-Calc
-using the TCHEA6 thermodynamic database \cite{TCHEA6}. For each composition, the
-equilibrium state was obtained through Gibbs free-energy minimization over the
-active elemental components.
-
-Equilibrium phase calculations were performed at 25, 500, 600, 650, 700, 800, and
-900 \(^{\circ}\mathrm{C}\), together with an elevated temperature of
-2000 \(^{\circ}\mathrm{C}\). At each temperature, the stable phases and their
-corresponding mole fractions were determined. These calculations were used to
-characterize the evolution of phase constitution across the temperature range of
-interest, including the formation of BCC solid-solution phases and competing
-intermetallic phases such as sigma, Laves, mu, and chi.
-
-The melting behavior of each alloy was evaluated using the Thermo-Calc Liquidus
-and Solidus Temperature property model, which provides the liquidus and solidus
-temperatures defining the thermodynamic processing window. Thermophysical
-properties were subsequently evaluated using the Equilibrium with Freeze-in
-Temperature property model, yielding density, heat capacity, thermal conductivity,
-thermal resistivity, thermal diffusivity, electrical resistivity, electrical
-conductivity, and thermal expansion. These properties were computed at both the
-liquidus and solidus temperatures, as well as at fixed temperatures spanning
-25--900 \(^{\circ}\mathrm{C}\).
-
-The resulting phase fraction, melting temperature, and thermophysical property data
-were used to characterize the thermodynamic behavior of the candidate alloy
-compositions and to provide the temperature-dependent inputs required for the
-subsequent thermal analyses.
-
-\subsection{ELM Melting Margin Modeling}
+\subsubsection{ELM Melting Margin Modeling}
 
 To quantify the resistance of candidate alloys to transient plasma loading, the ELM melting margin was evaluated as the temperature difference between the alloy melting temperature and the peak surface temperature reached during an ELM-like heat pulse. The surface temperature rise was computed using a one-dimensional, semi-infinite slab approximation, which is valid when the thermal penetration depth during the pulse is much smaller than the sample thickness. The model considers a background heat flux upon which a high-intensity pulse is superimposed for a short duration. The input parameters used in the heat balance formulation are listed in 
 Table~\ref{tab:ELM_params}.
