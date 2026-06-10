@@ -260,21 +260,22 @@ The MC model is a physics-based framework for body-centered cubic (BCC) random s
 
 \vspace{0.5em}
 
-where (\tau_{y0}) is the athermal yield strength, (\Delta E_b) is the activation barrier for dislocation glide, (T) is the absolute temperature, (\dot{\varepsilon}) is the applied strain rate, (\dot{\varepsilon}_0) is the reference strain rate, and (k) is Boltzmann's constant. The corresponding tensile yield strength was obtained through the appropriate Taylor-factor conversion.
 
-Following the approach of Vela et al. \cite{vela2023data}, the physical inputs required by the model, including atomic volumes, elastic constants ((C_{11}), (C_{12}), and (C_{44})), shear moduli, and Poisson ratios, were assembled from literature data and combined using the rule of mixtures to approximate the effective properties of each alloy composition.
 
-Yield strengths were evaluated at 25, 600, and (650^{\circ}\mathrm{C}) using a strain rate of (10^{-3},\mathrm{s}^{-1}). The resulting yield strengths were recorded as mechanical-property descriptors.
+where $\tau_{y0}$ is the athermal yield strength, $\Delta E_b$ is the activation barrier for dislocation glide, $T$ is the absolute temperature, $\dot{\varepsilon}$ is the applied strain rate, $\dot{\varepsilon}_0$ is the reference strain rate, and $k$ is Boltzmann's constant. The corresponding tensile yield strength was obtained through the appropriate Taylor-factor conversion.
 
+Following the approach of Vela et al.~\cite{vela2023data}, the physical inputs required by the model, including atomic volumes, elastic constants ($C_{11}$, $C_{12}$, and $C_{44}$), shear moduli, and Poisson ratios, were assembled from literature data and combined using the rule of mixtures to approximate the effective properties of each alloy composition.
+
+Yield strengths were evaluated at 25, 600, and $650^{\circ}\mathrm{C}$ using a strain rate of $10^{-3}\,\mathrm{s}^{-1}$. The resulting yield strengths were recorded as mechanical-property descriptors.
 
 
 \subsubsection{CALPHAD Thermodynamic Calculations}
 
 The feasible alloy compositions were subsequently evaluated using the CALPHAD (CALculation of PHAse Diagrams) method to characterize their thermodynamic stability, phase constitution, melting behavior, and thermophysical properties. CALPHAD has been widely employed for alloy design and phase-stability prediction in complex concentrated and refractory alloy systems \cite{li2023calphad,conway2022thermodynamic}. Thermodynamic calculations were performed in Thermo-Calc using the TCHEA6 thermodynamic database \cite{TCHEA6}. For each composition, the equilibrium state was obtained through Gibbs free-energy minimization over the active elemental components.
 
-Equilibrium phase calculations were performed at 25, 500, 600, 650, 700, 800, and 900 (^{\circ}\mathrm{C}), together with an elevated temperature of 2000 (^{\circ}\mathrm{C}). At each temperature, the stable phases and their corresponding mole fractions were determined. These calculations were used to characterize phase stability across the temperature range of interest, including the formation of BCC solid-solution phases and competing intermetallic phases such as sigma, Laves, mu, and chi.
+Equilibrium phase calculations were performed at 25, 500, 600, 650, 700, 800, and 900~$^{\circ}\mathrm{C}$, together with an elevated temperature of 2000~$^{\circ}\mathrm{C}$. At each temperature, the stable phases and their corresponding mole fractions were determined. These calculations were used to characterize phase stability across the temperature range of interest, including the formation of BCC solid-solution phases and competing intermetallic phases such as sigma, Laves, mu, and chi.
 
-The melting behavior of each alloy was evaluated using the Thermo-Calc Liquidus and Solidus Temperature property model, which provides the liquidus and solidus temperatures defining the processing window. Thermophysical properties were subsequently evaluated using the Equilibrium with Freeze-in Temperature property model, yielding density, heat capacity, thermal conductivity, thermal resistivity, thermal diffusivity, electrical resistivity, electrical conductivity, and thermal expansion. These properties were computed at both the liquidus and solidus temperatures, as well as at fixed temperatures spanning 25--900 (^{\circ}\mathrm{C}).
+The melting behavior of each alloy was evaluated using the Thermo-Calc Liquidus and Solidus Temperature property model, which provides the liquidus and solidus temperatures defining the processing window. Thermophysical properties were subsequently evaluated using the Equilibrium with Freeze-in Temperature property model, yielding density, heat capacity, thermal conductivity, thermal resistivity, thermal diffusivity, electrical resistivity, electrical conductivity, and thermal expansion. These properties were computed at both the liquidus and solidus temperatures, as well The at fixed temperatures spanning 25 - 900~$^{\circ}\mathrm{C}$.
 
 The resulting phase-fraction, melting-temperature, and thermophysical-property data were retained for subsequent alloy evaluation and provided the temperature-dependent inputs required for the ELM melting-margin calculations described in the following section.
 
