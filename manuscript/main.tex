@@ -1,4 +1,4 @@
-\documentclass[5p,preprint,times,sort&compress]{elsarticle}
+\documentclass[5p,times,sort&compress]{elsarticle}
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
@@ -6,6 +6,7 @@
 \usepackage{amsopn}
 \usepackage{mathtools}
 \usepackage{bm}
+\usepackage[table]{xcolor}
 \usepackage{textcomp}
 \usepackage{float}
 \usepackage{placeins}
@@ -28,6 +29,7 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{array}
+\usepackage{dblfloatfix}
 \usepackage{tabularx}
 \usepackage{colortbl}
 \usepackage{lscape}
@@ -103,12 +105,20 @@
 
 \begin{frontmatter}
 
-\title{Constraint-First Screening of Low-Activation Refractory Alloys via Linear Programming}
+%\title{Constraint-First Screening of Low-Activation Refractory Alloys via Linear Programming}
+
+%\title{Design of Terminal Compositions for Joinable/FGM-able Alloy System for Fusion Materials}
+
+
+
+%\title{Computational Design of a Doubly-Monotonic Functionally Graded Refractory Alloy for the Fusion First Wall}
+
+\title{Computational Design of a Doubly-Monotonic Functionally Graded Refractory Alloy for Fusion First Wall Applications}
 
 \author[1]{Samuel Ifada\texorpdfstring{\corref{cor1}}{}}
-
 \author[1]{Brent Vela}
-
+\author[1]{Do\u{g}uhan Sar\i{}t\"urk}
+\author[1]{James Hanagan}
 \author[1,2,3]{Raymundo Arr\'oyave}
 
 \affiliation[1]{organization={Department of Materials Science and Engineering, Texas A\&M University},
@@ -130,13 +140,26 @@
                 country={USA}}
 
 
+%\begin{abstract}
+%In alloy design, constraint-driven screening is traditionally performed by a generate-and-filter workflow, in which every candidate composition on a discrete grid is evaluated with a response model and filtered against performance thresholds. This incurs a cost proportional to the full composition grid, even when only a small fraction of candidates satisfy the constraints. Here we present an alternative framework that reformulates screening as a linear-programming (LP) feasibility problem whenever the response model is linear in alloy composition. Under this formulation, the compositions satisfying all screening criteria form a convex polytope on the atomic-fraction simplex, and the feasible compositions are obtained by enumerating the grid points within this polytope directly, rather than by explicit per-composition response evaluation. We demonstrate the approach using FLARE, a linear-in-composition activation model, to identify candidate plasma-facing and structural alloys for a two-material fusion first wall, screening an eleven-element refractory system against activation limits referenced to tungsten and EUROFER97. The LP-defined feasible set reproduces that of the conventional FLARE generate-and-filter workflow exactly, recovering the identical compositions and activation responses while replacing the evaluation of all \(\sim\!3\times10^{7}\) grid candidates with a direct analytical representation of the feasible space. More broadly, the constraint-first LP framework applies to any alloy-screening workflow governed by response models that are linear in composition.
+%\end{abstract}
+
+%\begin{keyword}
+%linear programming \sep constraint-first screening \sep feasible composition polytope \sep high-throughput alloy design \sep FLARE \sep low-activation refractory alloys
+%\end{keyword}
+
 \begin{abstract}
-In alloy design, constraint-driven screening is traditionally performed using a generate-and-filter workflow in which every candidate composition on a discrete grid is generated, evaluated using a response model, and subsequently filtered against performance thresholds. This approach incurs a computational cost proportional to the full composition grid, even when only a small fraction of candidates satisfy the imposed constraints. Here, we present an alternative framework that reformulates the screening problem as a linear-programming (LP) feasibility problem whenever the response model is linear in alloy composition. Under this formulation, the set of compositions satisfying all screening criteria forms a convex polytope on the atomic-fraction simplex, enabling feasibility to be determined through a single polytope construction followed by lattice-point enumeration, rather than through explicit per-composition response evaluation. The LP formulation reproduces the exact survivor set while eliminating the conventional generate-and-filter evaluation step. We demonstrate the approach using FLARE, a linear-in-composition activation model, to screen low-activation refractory alloys for fusion structural applications. The LP-defined survivor set reproduces the conventional FLARE-then-filter workflow exactly, while replacing exhaustive per-composition response evaluation with analytical feasible-space construction. More broadly, the proposed constraint-first LP framework is applicable to any alloy-screening workflow governed by response models that are linear in composition.
+
+The first wall of a fusion reactor must withstand extreme heat and particle flux at the plasma-facing surface while also carrying structural loads behind it. Tungsten (W) and W-rich alloys have been investigated as candidate plasma-facing materials, while reduced-activation ferritic-martensitic steels such as EUROFER97 are candidates for the structural region. Directly connecting these two alloy families, however, is challenging because of their thermophysical incompatibility and the formation of brittle W–Fe intermetallic phases. A potential solution is to introduce a compositionally graded transition between W-rich and EUROFER-like alloys to suppress intermetallic phase formation and mitigate thermophysical incompatibility. Here, we search for compositionally compatible W-type and EUROFER-type end members together with a continuous graded path between them, subject to phase-stability, property, and low-activation constraints. We identify a nineteen-alloy path forming a tungsten–vanadium substitutional gradient at a constant 5 at.\% rhenium. Along the path, the solidus temperature decreases monotonically from 3449 to 2195 K, while the Pugh ratio increases monotonically from 2.00 to 3.34. Requiring both properties to change monotonically at every compositional step is imposed as a hard constraint, rather than through weighted objectives or tunable penalty parameters.
+
+The path
+passes through the small set of compositions satisfying both design criteria, which constitute the only monotone gateway between the two alloy families. This monotonic profile translates directly into a deposition schedule for a prescribed through-wall gradient. The proposed framework is generally applicable to graded-alloy design problems governed by composition-linear screening models.
 \end{abstract}
+
 \begin{keyword}
- linear programming, constraint satisfaction-based alloy design, constraint-first screening,
-linear-in-composition response models, FLARE, low-activation refractory alloys, fusion structural
-materials.
+functionally graded alloys \sep fusion first wall \sep
+low-activation refractory alloys \sep high-throughput alloy design \sep
+graph-based path planning \sep monotonic property gradients
 \end{keyword}
 
 \end{frontmatter}
